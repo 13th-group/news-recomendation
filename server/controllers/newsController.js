@@ -7,12 +7,12 @@ class Controller {
     if(queryData){
       axios.get('https://api.nytimes.com/svc/search/v2/articlesearch.json?q='+ queryData +'&api-key=GEaQqj1bljwhAbSrrCBWzaM25pUFdkIy')
         .then((response)=>{ 
-          console.log(response.data.response.docs[0].multimedia[0].url)
+          console.log(response.data.response.docs)
           let findNyTimes = response.data.response.docs.map(el=>{
             return {
               web_url: el.web_url,
               image_url: el.multimedia[0].url,
-              title: el.abstrac,
+              title: el.abstract,
               date: el.pub_date
             }
           })
@@ -45,16 +45,15 @@ class Controller {
               }
             }          
           })
-          return axios.get('https://content.guardianapis.com/search?q=news&api-key=8343ccd2-9e9b-4f48-9027-1d59b23de5df')
+          return axios.get('https://api.currentsapi.services/v1/latest-news?&language=en&apiKey=vp47S4EQZGk7M7X-5ohHdNFKBA8tKZzpzc2M05yA1d1t36ZL')
         })
         .then((response)=>{
-          console.log(response.data.response.results[5])
-          guardians = response.data.response.results.map(el=> {
+          guardians = response.data.news.map(el=> {
               return {
-              web_url: el.webUrl,
-              image_url: "",
-              title: el.webTitle,
-              date: el.webPublicationDate}
+              web_url: el.url,
+              image_url: el.image,
+              title: el.title,
+              date: el.published}
           })
           return axios.get('https://newsapi.org/v2/top-headlines?country=us&apiKey=27634ce3d5884b9bb2d45db983c54b7a ')
         })
