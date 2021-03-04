@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="google-signin-client_id"
+      content="204376097051-1jbnbra8g0plr93v29crn86ligldch4t.apps.googleusercontent.com"
+    />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -11,6 +15,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>News Recomendation</title>
   </head>
   <body>
@@ -22,9 +27,7 @@
         style="border: 0; width: 40%"
         alt="home-image"
       />
-      <button type="submit" class="btn btn-dark w-100 mt-4">
-        Google Login
-      </button>
+      <div class="g-signin2" data-width="285" data-onsuccess="onSignIn"></div>
       <div class="dropdown-divider my-3"></div>
 
       <form id="form-login">
@@ -67,7 +70,7 @@
             placeholder="Type password"
           />
         </div>
-        <button type="submit" class="btn btn-dark w-100">Login</button>
+        <button type="submit" class="btn btn-dark w-100">Register</button>
         <a href="#" id="nav-login" class="d-block mx-auto mt-2 text-center">
           Already have an account?
         </a>
@@ -76,7 +79,10 @@
     <!-- end of auth page -->
 
     <!-- news page -->
-    <!-- <div id="news-page" class="p-2">
+    <div id="news-page" class="p-2">
+      <button type="button" class="btn btn-dark w-100 mb-3" onclick="logout()">
+        Logout
+      </button>
       <div class="form-group mb-0">
         <input
           type="text"
@@ -111,7 +117,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
     <!-- end of news page -->
 
     <!-- scripts -->
@@ -130,6 +136,7 @@
       integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
       crossorigin="anonymous"
     ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
