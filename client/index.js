@@ -1,18 +1,69 @@
 $(document).ready(() => {
-  const dummy = `<h1>Lorem ipsum</h1>`;
-  for (let index = 0; index < 25; index++) {
-    $("#content").append(dummy);
-  }
+  checkUserLogged();
+  $("#form-register").hide();
 
-  $(document).scroll(function () {
-    if ($(document).height() - $(document).scrollTop() < 800) {
-      addTitle(dummy);
-    }
+  $("#nav-register").click(() => {
+    $("#form-register").show();
+    $("#form-login").hide();
+  });
+
+  $("#nav-login").click(() => {
+    $("#form-register").hide();
+    $("#form-login").show();
   });
 });
 
-function addTitle(content) {
-  for (let index = 0; index < 25; index++) {
-    $("#content").append(content);
+function checkUserLogged() {
+  if (localStorage.access_token) {
+    $("#news-page").show();
+    $("#auth-page").hide();
+    return;
   }
+  $("#news-page").hide();
+  $("#auth-page").show();
 }
+
+function logout() {
+  const auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log("User signed out.");
+  });
+
+  localStorage.removeItem("access_token");
+  checkUserLogged();
+}
+
+function onSignIn(googleUser) {
+  const id_token = googleUser.getAuthResponse().id_token;
+  $.ajax({
+    url: "http://localhost:8000/oauth",
+    method: "POST",
+    data: {
+      id_token,
+    },
+  })
+    .done((res) => {
+      localStorage.setItem("access_token", res.access_token);
+      checkUserLogged();
+    })
+    .catch((err) => {
+      console.log(res);
+    });
+}
+
+// const dummy = `<h1>Lorem ipsum</h1>`;
+// for (let index = 0; index < 25; index++) {
+//   $("#content").append(dummy);
+// }
+
+// $(document).scroll(function () {
+//   if ($(document).height() - $(document).scrollTop() < 800) {
+//     addTitle(dummy);
+//   }
+// });
+
+// function addTitle(content) {
+//   for (let index = 0; index < 25; index++) {
+//     $("#content").append(content);
+//   }
+// }
