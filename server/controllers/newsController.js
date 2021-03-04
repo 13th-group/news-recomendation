@@ -7,7 +7,6 @@ class Controller {
     if(queryData){
       axios.get('https://api.nytimes.com/svc/search/v2/articlesearch.json?q='+ queryData +'&api-key=GEaQqj1bljwhAbSrrCBWzaM25pUFdkIy')
         .then((response)=>{ 
-          console.log(response.data.response.docs)
           let findNyTimes = response.data.response.docs.map(el=>{
             return {
               web_url: el.web_url,
@@ -19,7 +18,10 @@ class Controller {
           res.status(200).json(findNyTimes)
         })
         .catch((err)=>{
-          next(err)
+          next({
+            code: 401,
+            message: 'Request Data Failed'
+          })
         })
     }else{
       let nyTimes
@@ -69,7 +71,10 @@ class Controller {
         })
         .catch((error) => {
           // handle error
-          next(error)
+          next({
+            code: 401,
+            message: 'Request Data Failed'
+          })
         })
       }
     }    

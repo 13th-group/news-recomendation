@@ -8,10 +8,16 @@ module.exports = (req, res, next) => {
       req.loggedUser = verifyToken(req.headers.access_token)
       next()
     } else {
-      res.status(400).json({message : 'Invalid Token'})
+      next({
+        code: 400,
+        message: 'Invalid Token'
+      })
     }
   } catch (error) {
-    res.status(500).json(err)
+    next({
+      code: 500,
+      message: 'Internal Server Error'
+    })
   }
 
 
