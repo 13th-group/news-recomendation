@@ -15,7 +15,7 @@ class Controller {
       res.status(201).json(user)
     })
     .catch(err => {
-      res.status(500).json(err)
+      next(err)
     })
   }
 
@@ -41,15 +41,24 @@ class Controller {
           res.status(200).json({accessToken})
         } 
         else {
-          res.status(400).json({message : 'Invalid email or Password'})
+          next({
+            code: 400,
+            message : 'Invalid Email or Password'
+          })
         }
       }
       else {
-        res.status(400).json({message : 'Invalid email or Password'})
+        next({
+          code: 400,
+          message : 'Invalid Email or Password'
+        })
       }
     })
     .catch(err => {
-      res.status(500).json(err)
+      next({
+        code: 500,
+        message: 'Internal Server Error'
+      })
     })
 
   }
