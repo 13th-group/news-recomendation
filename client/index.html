@@ -14,9 +14,79 @@
     <title>News Recomendation</title>
   </head>
   <body>
-    <!-- content here -->
-    <div id="content"></div>
-    <!-- end of content -->
+    <!-- auth page -->
+    <div class="p-3" id="auth-page">
+      <img
+        src="./assets/logo.svg"
+        class="img-thumbnail d-block mx-auto my-4"
+        style="border: 0; width: 40%"
+        alt="home-image"
+      />
+      <button type="submit" class="btn btn-dark w-100 mt-4">
+        Google Login
+      </button>
+      <div class="dropdown-divider my-3"></div>
+
+      <form id="form-login">
+        <div class="form-group">
+          <input
+            type="email"
+            class="form-control"
+            id="email-register"
+            placeholder="Type an email"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            id="password-register"
+            placeholder="Type password"
+          />
+        </div>
+        <button type="submit" class="btn btn-dark w-100">Login</button>
+        <a href="#" id="nav-register" class="d-block mx-auto mt-2 text-center">
+          Don't have an account?
+        </a>
+      </form>
+
+      <form id="form-register">
+        <div class="form-group">
+          <input
+            type="email"
+            class="form-control"
+            id="email-register"
+            placeholder="Type an email"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            id="password-register"
+            placeholder="Type password"
+          />
+        </div>
+        <button type="submit" class="btn btn-dark w-100">Login</button>
+        <a href="#" id="nav-login" class="d-block mx-auto mt-2 text-center">
+          Already have an account?
+        </a>
+      </form>
+    </div>
+    <!-- end of auth page -->
+
+    <!-- news page -->
+    <!-- <div id="news-page">
+      <div class="form-group">
+        <input
+          type="email"
+          class="form-control"
+          id="email-register"
+          placeholder="Type an email"
+        />
+      </div>
+    </div> -->
+    <!-- end of news page -->
 
     <!-- scripts -->
     <script
