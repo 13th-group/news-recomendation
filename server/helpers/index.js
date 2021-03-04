@@ -1,8 +1,8 @@
 const { getToken, verifyToken } = require("./tokenHandler");
-const { hashPasword, comparePassword } = require("./passwordHandler");
+const { hashPassword, comparePassword } = require("./passwordHandler");
 
 module.exports = {
-  hashPasword,
+  hashPassword,
   comparePassword,
   getToken,
   verifyToken,
