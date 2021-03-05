@@ -1,116 +1,124 @@
-Done
+# NEWS RECOMMENDATION APP
+``News recommendation is an application to show worldwide news based on the categories``
 
-- Client-Server model
-- Min 3 API (min 1 API Key)
-- github for colab
 
-Not yet
+> POST /register
 
-- Rest API Doc
 
-POST /register
-
-Req.body
-
+Req.body:
 ```json
-{
-  "email": "<email>",
-  "password": "<password>"
-}
-```
-
-success 201. pesan
-respones....
-
-POST /login
-
-```json
-{
-  "email": "<email>",
-  "password": "<password>"
-}
-```
-
-POST /oauthLogin
-
-```json
-{
-  "token": "<token>"
-}
-```
-
-GET /news
-
-```json
-[
   {
-    "web_url": "<web_url>",
-    "image_url": "<image_url>",
-    "title": "<title>",
-    "date": "<date>"
-  },
-  {
-    "web_url": "<web_url>",
-    "image_url": "<image_url>",
-    "title": "<title>",
-    "date": "<date>"
+    "email": "<email>",
+    "password": "<password>"
   }
-]
 ```
 
-- 3rd API on server (use Axios)
-- Auth
-- 3rd Party Login - Google OAuth
-- Client-Side HTML-CSS-jQuery
+Response (200 - OK)
+```json
+  {
+    "id": "<id>",
+    "email": "<email>",
+  }
+```
 
-Task
+Response (400 - Bad Request)
+```json
+  {
+    "message": "<validation error message>"
+  }
+```
 
-Server
+Response (500 - Internal Server Error)
+```json
+  {
+    "message": "Internal Server Error"
+  }
+```
 
-- POST /register
-- POST /login
+> POST /login
 
----
+Req.body:
+```json
+  {
+    "email": "<email>",
+    "password": "<password>"
+  }
+```
 
-- POST /oauthLogin
-  - server
-  - client
+Response (200 - OK)
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
 
----
+Response (400 - Bad Request)
+```json
+  {
+    "message": "<validation error message>"
+  }
+```
 
-- GET /news
-  - get data API NYTimes
-  - get data API Guardian
-  - get data API News
-  - data prepare
+Response (500 - Internal Server Error)
+```json
+  {
+    "message": "Internal Server Error"
+  }
+```
 
----
+> GET /news
 
-- Error handler
+Req.headers:
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
 
-Client
+Response (200 - OK)
+```json
+  [
+    {
+      "web_url": "<web_url>",
+      "image_url": "<image_url>",
+      "title": "<title>",
+      "date": "<date>"
+    },
+    {
+      "web_url": "<web_url>",
+      "image_url": "<image_url>",
+      "title": "<title>",
+      "date": "<date>"
+    }
+  ]
+```
 
-- Pages Login / Register
-  - design
-  - auth jQuery
-  - logout
+Response (401 - Unauthorized)
+```json
+  {
+    "message": "<Unauthorized Message>"
+  }
+```
 
----
+Response (500 - Internal Server Error)
+```json
+  {
+    "message": "Internal Server Error"
+  }
+```
 
-- Pages News
-  - design
-  - get news
-  - search
-  - infinite scroll
+> GET /Oauth
 
-Rio
+Req.body:
+``` json
+  {
+    "token": "<access_token>"
+  }
+```
 
-- Get news + query
-
-Soraida
-
-- API Doc
-- Server login / register
-
-Rangga
-sisanya
+Response (200 - OK)
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
