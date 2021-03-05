@@ -19,6 +19,11 @@ $(document).ready(() => {
     const value = $("#search").val();
     fetchNews(value);
   });
+
+  $("#logout").click((e) => {
+    e.preventDefault();
+    logout();
+  });
 });
 
 function checkUserLogged() {
@@ -100,6 +105,14 @@ function alert(message) {
 
 function fetchNews(query = "") {
   $("#news").empty();
+  $("#news").append(`
+    <div class="w-100 d-flex justify-content-center">  
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  `);
+
   $.ajax({
     url: `${BASE_URL}/news?q=${query}`,
     method: "GET",
@@ -108,6 +121,16 @@ function fetchNews(query = "") {
     },
   })
     .done((res) => {
+      $("#news").empty();
+      if (res.news.length === 0) {
+        $("#news").append(`
+          <div class="w-100 d-flex justify-content-center">  
+            Data not found
+          </div>
+        `);
+        return;
+      }
+
       res.news.forEach((news) => {
         $("#news").append(`
           <div class="d-flex justify-content-between position-relative px-2 py-4 border-bottom">
@@ -117,7 +140,9 @@ function fetchNews(query = "") {
             <a href="${news.web_url}" class="stretched-link"></a>
           </div>
           <img src="${
-            news.image_url ? news.image_url : "./assets/blank-img.jpg"
+            news.image_url && news.image_url !== "None"
+              ? news.image_url
+              : "./assets/blank-img.jpg"
           }"
             class="ml-2" style="object-fit: cover;width: 72px; height: 72px;"
             alt="${news.title}"
@@ -127,6 +152,10 @@ function fetchNews(query = "") {
       });
     })
     .fail((err) => {
-      console.log(err);
+      // console.log(err);
+      alert(err.responseJSON);
+    })
+    .always(() => {
+      $("#search").val("");
     });
 }
