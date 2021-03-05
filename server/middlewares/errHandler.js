@@ -1,4 +1,8 @@
 module.exports = (err, req, res, next) => {
+  if (!err) {
+    return;
+  }
+
   let errMessage = {
     status: 500,
     message: "Internal Server Error",
@@ -22,25 +26,17 @@ module.exports = (err, req, res, next) => {
         message: data.name,
       };
       break;
+    case "Please login first":
+    case "Invalid Token":
+      errMessage = {
+        ...errMessage,
+        status: 401,
+        message: data.name,
+      };
+      break;
     default:
       break;
   }
 
   res.status(errMessage.status).json({ message: errMessage.message });
-
-  // if(err.code === 400) {
-  //   res.status(err.code).json({message: err.message})
-  // }
-  // else if (err.code === 401) {
-  //   res.status(err.code).json({message: err.message})
-  // }
-  // else if (err.code === 500) {
-  //   res.status(err.code).json({message: err.message})
-  // }
-  // else {
-  //   const error = err.errors.map(el => {
-  //     return {message: el.message}
-  //   })
-  //   res.status(500).json(error)
-  // }
 };

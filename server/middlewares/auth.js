@@ -1,24 +1,32 @@
-const { verifyToken } = require('../helpers')
+const { verifyToken } = require("../helpers");
+const { User } = require("../models");
 
-
-module.exports = (req, res, next) => {
-
+module.exports = async (req, res, next) => {
   try {
-    if(req.headers.access_token) {
-      req.loggedUser = verifyToken(req.headers.access_token)
-      next()
-    } else {
-      next({
-        code: 400,
-        message: 'Invalid Token'
-      })
+    if (!req.headers.access_token) {
+      throw { name: "Please login first" };
     }
-  } catch (error) {
+
+    const { id, email } = verifyToken(req.headers.access_token);
+
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw { name: "Invalid Token" };
+    }
+
+    req.loggedUser = {
+      id,
+      email: user.email,
+    };
+    next();
+  } catch (err) {
     next({
-      code: 500,
-      message: 'Internal Server Error'
-    })
+      data: err,
+    });
   }
-
-
 };
