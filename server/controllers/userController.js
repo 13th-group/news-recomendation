@@ -1,7 +1,7 @@
 const { OAuth2Client } = require("google-auth-library");
 
 const { User } = require("../models");
-const { comparePassword, getToken } = require("../helpers");
+const { comparePassword, getToken, verifyToken } = require("../helpers");
 
 class Controller {
   static async oauth(req, res, next) {
@@ -25,8 +25,8 @@ class Controller {
       });
 
       const token = getToken({
-        id: user.id,
-        email: user.email,
+        id: user[0].id,
+        email: user[0].email,
       });
 
       res.status(200).json({ access_token: token });

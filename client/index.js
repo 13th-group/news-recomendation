@@ -14,12 +14,18 @@ $(document).ready(() => {
     $("#form-register").hide();
     $("#form-login").show();
   });
+
+  $("#btn-search").click(() => {
+    const value = $("#search").val();
+    fetchNews(value);
+  });
 });
 
 function checkUserLogged() {
   if (localStorage.access_token) {
     $("#news-page").show();
     $("#auth-page").hide();
+    fetchNews();
     return;
   }
   $("#news-page").hide();
@@ -92,19 +98,35 @@ function alert(message) {
   }, 2000);
 }
 
-// const dummy = `<h1>Lorem ipsum</h1>`;
-// for (let index = 0; index < 25; index++) {
-//   $("#content").append(dummy);
-// }
-
-// $(document).scroll(function () {
-//   if ($(document).height() - $(document).scrollTop() < 800) {
-//     addTitle(dummy);
-//   }
-// });
-
-// function addTitle(content) {
-//   for (let index = 0; index < 25; index++) {
-//     $("#content").append(content);
-//   }
-// }
+function fetchNews(query = "") {
+  $("#news").empty();
+  $.ajax({
+    url: `${BASE_URL}/news?q=${query}`,
+    method: "GET",
+    headers: {
+      access_token: localStorage.access_token,
+    },
+  })
+    .done((res) => {
+      res.news.forEach((news) => {
+        $("#news").append(`
+          <div class="d-flex justify-content-between position-relative px-2 py-4 border-bottom">
+          <div class="">
+            <h2 class="h6">${news.title}</h2>
+            <p class="text-muted" style="font-size: 0.8rem">${news.date}</p>
+            <a href="${news.web_url}" class="stretched-link"></a>
+          </div>
+          <img src="${
+            news.image_url ? news.image_url : "./assets/blank-img.jpg"
+          }"
+            class="ml-2" style="object-fit: cover;width: 72px; height: 72px;"
+            alt="${news.title}"
+          >
+          </div>
+        `);
+      });
+    })
+    .fail((err) => {
+      console.log(err);
+    });
+}
