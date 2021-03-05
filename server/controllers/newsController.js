@@ -6,9 +6,7 @@ class Controller {
     if (queryData) {
       axios
         .get(
-          "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" +
-            queryData +
-            "&api-key=GEaQqj1bljwhAbSrrCBWzaM25pUFdkIy"
+          `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${queryData}&api-key=${process.env.NYT_API_KEY}`
         )
         .then((response) => {
           let findNyTimes = response.data.response.docs.map((el) => {
@@ -30,7 +28,6 @@ class Controller {
               date: fullDate,
             };
           });
-          // res.status(200).json(response.data.response.docs);
           res.status(200).json({ news: findNyTimes });
         })
         .catch((err) => {
@@ -45,7 +42,7 @@ class Controller {
       let news;
       axios
         .get(
-          "https://api.nytimes.com/svc/mostpopular/v2/emailed/7.json?api-key=GEaQqj1bljwhAbSrrCBWzaM25pUFdkIy "
+          `https://api.nytimes.com/svc/mostpopular/v2/emailed/7.json?api-key=${process.env.NYT_API_KEY}`
         )
         .then((response) => {
           // handle success
@@ -67,7 +64,7 @@ class Controller {
             }
           });
           return axios.get(
-            "https://api.currentsapi.services/v1/latest-news?&language=en&apiKey=vp47S4EQZGk7M7X-5ohHdNFKBA8tKZzpzc2M05yA1d1t36ZL"
+            `https://api.currentsapi.services/v1/latest-news?&language=en&apiKey=${process.env.CURRENTS_API_KEY}`
           );
         })
         .then((response) => {
@@ -80,7 +77,7 @@ class Controller {
             };
           });
           return axios.get(
-            "https://newsapi.org/v2/top-headlines?country=us&apiKey=27634ce3d5884b9bb2d45db983c54b7a "
+            `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}`
           );
         })
         .then((response) => {
@@ -94,18 +91,11 @@ class Controller {
           });
 
           const arrNews = [...nyTimes, ...guardians, ...news];
-          // arrNews.sort(() => {
-          //   return 0.5 - Math.Random();
-          // });
-          // console.log(arrNews);
           res.status(200).json({ news: arrNews });
         })
         .catch((err) => {
-          // handle error
           next({
             data: err,
-            // code: 401,
-            // message: "Request Data Failed",
           });
         });
     }
