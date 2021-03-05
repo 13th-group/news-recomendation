@@ -1,6 +1,9 @@
+const BASE_URL = "http://localhost:8000";
+
 $(document).ready(() => {
   checkUserLogged();
   $("#form-register").hide();
+  $("#liveToast").hide();
 
   $("#nav-register").click(() => {
     $("#form-register").show();
@@ -36,7 +39,7 @@ function logout() {
 function onSignIn(googleUser) {
   const id_token = googleUser.getAuthResponse().id_token;
   $.ajax({
-    url: "http://localhost:8000/oauth",
+    url: `${BASE_URL}/oauth`,
     method: "POST",
     data: {
       id_token,
@@ -46,9 +49,47 @@ function onSignIn(googleUser) {
       localStorage.setItem("access_token", res.access_token);
       checkUserLogged();
     })
-    .catch((err) => {
-      console.log(res);
+    .fail((err) => {
+      alert("Internal Server Error");
     });
+}
+
+function auth(event, type) {
+  event.preventDefault();
+
+  $.ajax({
+    url: `${BASE_URL}/${type}`,
+    method: "POST",
+    data: {
+      email: $(`#email-${type}`).val(),
+      password: $(`#password-${type}`).val(),
+    },
+  })
+    .done((res) => {
+      if (type === "register") {
+        $("#form-register").hide();
+        $("#form-login").show();
+        return;
+      }
+
+      localStorage.setItem("access_token", res.access_token);
+      checkUserLogged();
+    })
+    .fail((err) => {
+      alert(err.responseJSON.message);
+    })
+    .always(() => {
+      $(`#form-${type}`)[0].reset();
+    });
+}
+
+function alert(message) {
+  $("#liveToast p").text(message);
+  $("#liveToast").show();
+
+  setTimeout(() => {
+    $("#liveToast").hide();
+  }, 2000);
 }
 
 // const dummy = `<h1>Lorem ipsum</h1>`;

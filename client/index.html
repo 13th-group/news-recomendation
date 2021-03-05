@@ -30,12 +30,12 @@
       <div class="g-signin2" data-width="285" data-onsuccess="onSignIn"></div>
       <div class="dropdown-divider my-3"></div>
 
-      <form id="form-login">
+      <form id="form-login" onsubmit="auth(event, 'login')">
         <div class="form-group">
           <input
             type="email"
             class="form-control"
-            id="email-register"
+            id="email-login"
             placeholder="Type an email"
           />
         </div>
@@ -43,7 +43,7 @@
           <input
             type="password"
             class="form-control"
-            id="password-register"
+            id="password-login"
             placeholder="Type password"
           />
         </div>
@@ -53,7 +53,7 @@
         </a>
       </form>
 
-      <form id="form-register">
+      <form id="form-register" onsubmit="auth(event, 'register')">
         <div class="form-group">
           <input
             type="email"
@@ -87,7 +87,7 @@
         <input
           type="text"
           class="form-control"
-          id="email-register"
+          id="search"
           placeholder="Search..."
         />
       </div>
@@ -120,12 +120,25 @@
     </div>
     <!-- end of news page -->
 
+    <!-- toast -->
+    <div
+      id="liveToast"
+      class="position-fixed w-100 bottom-4 right-0 text-center"
+    >
+      <p
+        class="badge badge-pill py-1 px-3 font-weight-normal"
+        style="background-color: rgb(235, 117, 117); font-size: 1rem"
+      ></p>
+    </div>
+    <!-- end of toast -->
+
     <!-- scripts -->
-    <script
+    <!-- <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
       crossorigin="anonymous"
-    ></script>
+    ></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
       integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
@@ -136,7 +149,6 @@
       integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
       crossorigin="anonymous"
     ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

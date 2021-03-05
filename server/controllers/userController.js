@@ -31,69 +31,58 @@ class Controller {
 
       res.status(200).json({ access_token: token });
     } catch (err) {
-      res.status(500).json(err);
-    }
-  }
-
-  static register(req, res, next) {
-    let newUser = {
-      email: req.body.email,
-      password: req.body.password
-    }
-
-    User.create(newUser)
-    .then(user => {
-      res.status(201).json(user)
-    })
-    .catch(err => {
-      next(err)
-    })
-  }
-
-  static login(req, res, next) {
-
-    const email = req.body.email
-    const password = req.body.password
-
-    User.findOne({
-      where : { email }
-    })
-    .then(user => {
-      if (user) {
-        const comparedPasswords = comparePassword(password, user.password)
-
-        if (comparedPasswords) {
-          const payload = {
-            id:user.id,
-            email:user.email
-          }
-
-          const accessToken = getToken(payload)
-          res.status(200).json({accessToken})
-        } 
-        else {
-          next({
-            code: 400,
-            message : 'Invalid Email or Password'
-          })
-        }
-      }
-      else {
-        next({
-          code: 400,
-          message : 'Invalid Email or Password'
-        })
-      }
-    })
-    .catch(err => {
       next({
-        code: 500,
-        message: 'Internal Server Error'
-      })
-    })
-
+        data: err,
+      });
+    }
   }
 
+  static async register(req, res, next) {
+    try {
+      const newUser = {
+        email: req.body.email,
+        password: req.body.password,
+      };
+      const user = await User.create(newUser);
+      res.status(201).json({
+        id: user.id,
+        email: user.email,
+      });
+    } catch (err) {
+      next({
+        data: err,
+      });
+    }
+  }
+
+  static async login(req, res, next) {
+    try {
+      const { email, password } = req.body;
+
+      const user = await User.findOne({
+        where: { email },
+      });
+
+      if (!user) {
+        throw { name: "Invalid Email or Password" };
+      }
+
+      if (!comparePassword(password, user.password)) {
+        throw { name: "Invalid Email or Password" };
+      }
+
+      const access_token = getToken({
+        id: user.id,
+        email: user.email,
+      });
+
+      res.status(200).json({ access_token });
+    } catch (err) {
+      next({
+        data: err,
+      });
+    }
+  }
 }
 
 module.exports = Controller;
